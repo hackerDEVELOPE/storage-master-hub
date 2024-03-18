@@ -51,6 +51,9 @@ public class CloudFileHandler extends SimpleChannelInboundHandler<CloudMessage> 
                 currentDir = currentDir.resolve(fileName).normalize();
                 ctx.writeAndFlush(new ListFiles(currentDir));
             }
+        } else if (cloudMessage instanceof DeleteRequest deleteRequest) {
+            Files.delete(currentDir.resolve(deleteRequest.getName()));
+            ctx.writeAndFlush(new ListFiles(currentDir));
         }
     }
 }

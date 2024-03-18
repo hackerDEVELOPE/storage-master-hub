@@ -71,8 +71,8 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.cloudapplication.ChatApplication
-<!--                           <mainClass>com.example.cloudapplication/com.example.cloudapplication.ChatApplication     -->
+                            <mainClass>com.example.cloudapplication.StorageApp
+<!--                           <mainClass>com.example.cloudapplication/com.example.cloudapplication.StorageApp-->
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

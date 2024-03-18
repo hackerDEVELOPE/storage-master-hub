@@ -6,11 +6,32 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ContextMenu?>
+
+<?import com.sun.javafx.scene.control.ContextMenuContent.MenuBox?>
+<?import javafx.scene.control.MenuItem?>
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.cloudapplication.ChatController">
+      fx:controller="com.example.cloudapplication.StorageController">
     <HBox>
-        <ListView fx:id="clientView" onMouseClicked="#changePathClient" prefHeight="335.0" prefWidth="214.0"/>
-        <ListView fx:id="serverView" onMouseClicked="#changePathOnServerRequest" prefHeight="335.0" prefWidth="214.0"/>
+        <ListView fx:id="clientView" onMouseClicked="#changePathClient" prefHeight="335.0" prefWidth="214.0">
+           <contextMenu>
+               <ContextMenu>
+                  <items>
+                      <MenuItem text="delete" onAction="#deleteFileOnClientSide"/>
+                  </items>
+               </ContextMenu>
+           </contextMenu>
+        </ListView>
+
+        <ListView fx:id="serverView" onMouseClicked="#changePathOnServerRequest" prefHeight="335.0" prefWidth="214.0">
+            <contextMenu>
+                <ContextMenu>
+                    <items>
+                        <MenuItem text="delete" onAction="#deleteFileOnServerSide"/>
+                    </items>
+                </ContextMenu>
+            </contextMenu>
+        </ListView>
     </HBox>
     <HBox prefHeight="49.0" prefWidth="428.0">
         <Button fx:id="upButtonClient" alignment="CENTER" mnemonicParsing="false" onAction="#pathUpClient" prefHeight="49.0"

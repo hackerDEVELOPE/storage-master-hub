@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ChatController implements Initializable {
+public class StorageController implements Initializable {
     @FXML
     public ListView<String> clientView;
     @FXML
@@ -135,5 +135,19 @@ public class ChatController implements Initializable {
         if (mouseEvent.getClickCount() == 2) {
             network.write(new ChangePathOnServerRequest(serverView.getSelectionModel().getSelectedItem()));
         }
+    }
+
+    public void deleteFileOnClientSide(ActionEvent actionEvent) throws IOException {
+        String fileToDelete = clientView.getSelectionModel().getSelectedItem();
+        Files.delete(Path.of(currentDir).resolve(fileToDelete));
+        Platform.runLater(() -> {
+            clientView.getItems().clear();
+            clientView.getItems().addAll(getFiles(currentDir));
+        });
+    }
+
+    public void deleteFileOnServerSide(ActionEvent actionEvent) throws IOException {
+        String fileToDelete = serverView.getSelectionModel().getSelectedItem();
+        network.write(new DeleteRequest(fileToDelete));
     }
 }
