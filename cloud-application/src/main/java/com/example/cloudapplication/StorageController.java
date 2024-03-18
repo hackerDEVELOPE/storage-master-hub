@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.example.*;
 
 import java.io.File;
@@ -28,15 +29,15 @@ public class StorageController implements Initializable {
     public Button upload;
     @FXML
     public Button download;
-    @FXML
-    public Button upButtonClient;
-    @FXML
-    public Button upButtonServer;
+
 
     private final String homeDir = "clientFiles/";
     private String currentDir = Path.of(homeDir).toAbsolutePath().toString();
 
     private Network network;
+
+    private Stage regStage;
+    private RegController regController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -101,13 +102,6 @@ public class StorageController implements Initializable {
         network.write(new FileRequest(file));
     }
 
-    public void pathUpClient(ActionEvent actionEvent) {
-        currentDir = Path.of(currentDir).resolve("..").normalize().toString();
-        Platform.runLater(() -> {
-            clientView.getItems().clear();
-            clientView.getItems().addAll(getFiles(currentDir));
-        });
-    }
 
 
     public void changePathClient(MouseEvent mouseEvent) {
@@ -127,9 +121,6 @@ public class StorageController implements Initializable {
 
     }
 
-    public void pathUpRequest(ActionEvent actionEvent) throws IOException {
-        network.write(new PathUpRequest());
-    }
 
     public void changePathOnServerRequest(MouseEvent mouseEvent) throws IOException {
         if (mouseEvent.getClickCount() == 2) {

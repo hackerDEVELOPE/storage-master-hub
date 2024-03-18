@@ -34,10 +34,6 @@ public class CloudFileHandler extends SimpleChannelInboundHandler<CloudMessage> 
             Files.write(currentDir.resolve(fileMessage.getName()), fileMessage.getData());
             ctx.writeAndFlush(new ListFiles(currentDir));
 
-        } else if (cloudMessage instanceof PathUpRequest) {
-            currentDir = currentDir.resolve("..").normalize();
-            ctx.writeAndFlush(new ListFiles(currentDir));
-
         } else if (cloudMessage instanceof ChangePathOnServerRequest changePathOnServerRequest){
             String fileName = changePathOnServerRequest.getName();
             if (Files.isDirectory(currentDir.resolve(fileName).normalize())){
