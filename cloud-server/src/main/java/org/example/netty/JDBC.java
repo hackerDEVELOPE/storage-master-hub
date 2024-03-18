@@ -1,20 +1,14 @@
 package org.example.netty;
-
-import lombok.extern.slf4j.Slf4j;
-
 import java.sql.*;
-@Slf4j
+
 public class JDBC {
     private static Connection connection;
     public static Statement stmt;
     public static PreparedStatement psRegistration;
 
-
-
     public static void prepareStatements() {
         try {
             psRegistration = connection.prepareStatement("INSERT INTO users (login, password) VALUES (?, ?)");
-            log.debug("stmt was prepared");
         } catch (SQLException e) {
             e.printStackTrace();
         }

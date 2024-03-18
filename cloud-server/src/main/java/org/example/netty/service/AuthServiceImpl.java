@@ -1,7 +1,7 @@
-package org.example.netty.authService;
+package org.example.netty.service;
 
-import org.example.netty.authRepository.AuthRepository;
-import org.example.netty.authRepository.AuthRepositoryImpl;
+import org.example.netty.repository.AuthRepository;
+import org.example.netty.repository.AuthRepositoryImpl;
 
 public class AuthServiceImpl implements AuthService{
     private final AuthRepository authRepository;

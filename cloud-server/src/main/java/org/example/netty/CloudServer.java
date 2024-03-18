@@ -10,21 +10,17 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.example.netty.authContoller.AuthController;
-import org.example.netty.authContoller.AuthControllerImpl;
+import org.example.netty.contoller.AuthController;
+import org.example.netty.contoller.AuthControllerImpl;
 import org.example.netty.handler.CloudFileHandler;
 
 @Slf4j
 public class CloudServer {
 
+    @Getter
     private static AuthController authController = null;
-
-    public static AuthController getAuthController() {
-        return authController;
-    }
 
     public CloudServer() {
         JDBC.connect();

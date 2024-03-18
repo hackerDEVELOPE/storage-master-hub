@@ -1,7 +1,7 @@
-package org.example.netty.authContoller;
+package org.example.netty.contoller;
 
-import org.example.netty.authService.AuthService;
-import org.example.netty.authService.AuthServiceImpl;
+import org.example.netty.service.AuthService;
+import org.example.netty.service.AuthServiceImpl;
 
 public class AuthControllerImpl implements AuthController{
     private final AuthService authService;

@@ -1,4 +1,4 @@
-package org.example.netty.authRepository;
+package org.example.netty.repository;
 
 import org.example.netty.JDBC;
 

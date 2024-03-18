@@ -1,4 +1,4 @@
-package org.example.netty.authService;
+package org.example.netty.service;
 
 public interface AuthService {
     boolean registration(String login, String password);

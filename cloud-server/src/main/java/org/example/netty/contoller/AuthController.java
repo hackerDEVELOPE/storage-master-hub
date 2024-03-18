@@ -1,4 +1,4 @@
-package org.example.netty.authContoller;
+package org.example.netty.contoller;
 
 
 public interface AuthController {
