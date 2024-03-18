@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.example.*;
@@ -29,7 +30,8 @@ public class StorageController implements Initializable {
     public Button upload;
     @FXML
     public Button download;
-
+    @FXML
+    public TextField sysText;
 
     private final String homeDir = "clientFiles/";
     private String currentDir = Path.of(homeDir).toAbsolutePath().toString();
@@ -50,6 +52,8 @@ public class StorageController implements Initializable {
             Thread readThread = new Thread(this::readLoop);
             readThread.setDaemon(true);
             readThread.start();
+
+            sysText.setText("Welcome to Great Storage!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,12 +98,16 @@ public class StorageController implements Initializable {
     public void upload(ActionEvent actionEvent) throws IOException {
         String file = clientView.getSelectionModel().getSelectedItem();
         network.write(new FileMessage(Path.of(currentDir).resolve(file)));
+
+        setSysText("file: "+ file+" was sent to storage");
     }
 
 
     public void download(ActionEvent actionEvent) throws IOException {
         String file = serverView.getSelectionModel().getSelectedItem();
         network.write(new FileRequest(file));
+
+        setSysText("file: "+ file+" was downloaded from storage");
     }
 
 
@@ -135,10 +143,19 @@ public class StorageController implements Initializable {
             clientView.getItems().clear();
             clientView.getItems().addAll(getFiles(currentDir));
         });
+
+        setSysText("file: "+ fileToDelete+" was deleted");
     }
 
     public void deleteFileOnServerSide(ActionEvent actionEvent) throws IOException {
         String fileToDelete = serverView.getSelectionModel().getSelectedItem();
         network.write(new DeleteRequest(fileToDelete));
+
+        setSysText("file: "+ fileToDelete+" was deleted");
+    }
+
+    private void setSysText(String msg){
+        sysText.clear();
+        sysText.setText(msg);
     }
 }
