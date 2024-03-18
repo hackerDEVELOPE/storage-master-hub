@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.example.*;
+import org.example.netty.CloudServer;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,7 +27,6 @@ public class CloudFileHandler extends SimpleChannelInboundHandler<CloudMessage> 
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, CloudMessage cloudMessage) throws Exception {
-
         if (cloudMessage instanceof FileRequest fileRequest) {
             ctx.writeAndFlush(new FileMessage(currentDir.resolve(fileRequest.getName())));
 
@@ -47,9 +47,14 @@ public class CloudFileHandler extends SimpleChannelInboundHandler<CloudMessage> 
                 currentDir = currentDir.resolve(fileName).normalize();
                 ctx.writeAndFlush(new ListFiles(currentDir));
             }
+
         } else if (cloudMessage instanceof DeleteRequest deleteRequest) {
             Files.delete(currentDir.resolve(deleteRequest.getName()));
             ctx.writeAndFlush(new ListFiles(currentDir));
+
+        } else if (cloudMessage instanceof  RegistrationRequest registrationRequest){
+            CloudServer.getAuthController()
+                    .regUser(registrationRequest.getLogin(), registrationRequest.getPassword());
         }
     }
 }

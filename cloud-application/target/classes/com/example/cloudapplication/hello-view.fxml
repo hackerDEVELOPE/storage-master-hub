@@ -4,12 +4,20 @@
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cloudapplication.StorageController">
+    <HBox>
+        <TextField promptText="login"/>
+        <PasswordField promptText="password"/>
+        <Button maxWidth="1.7976931348623157E308" text="Sign in" HBox.hgrow="ALWAYS"/>
+        <Button fx:id="regButton" maxWidth="1.7976931348623157E308" onAction="#regStage"
+                text="Sign up" HBox.hgrow="ALWAYS"/>
+    </HBox>
     <HBox>
         <ListView fx:id="clientView" maxWidth="1.7976931348623157E308" onMouseClicked="#changePathClient">
            <contextMenu>

@@ -3,7 +3,10 @@ package com.example.cloudapplication;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -32,6 +35,8 @@ public class StorageController implements Initializable {
     public Button download;
     @FXML
     public TextField sysText;
+    @FXML
+    public Button regButton;
 
     private final String homeDir = "clientFiles/";
     private String currentDir = Path.of(homeDir).toAbsolutePath().toString();
@@ -157,5 +162,36 @@ public class StorageController implements Initializable {
     private void setSysText(String msg){
         sysText.clear();
         sysText.setText(msg);
+    }
+
+    public void regStage(ActionEvent actionEvent) {
+        if (regStage == null){
+            createRegStage();
+        }
+        regStage.show();
+    }
+
+    private void createRegStage() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(StorageApp.class.getResource("/com/example/cloudapplication/reg.fxml"));
+            Parent root = fxmlLoader.load();
+
+            regStage = new Stage();
+            regStage.setTitle("Great Storage registration");
+            regStage.setScene(new Scene(root, 600, 500));
+
+            regController = fxmlLoader.getController();
+            regController.setController(this);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void registration(String login, String password) {
+        try {
+            network.write(new RegistrationRequest(login, password));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
