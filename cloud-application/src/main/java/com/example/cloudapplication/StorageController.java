@@ -5,12 +5,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.example.*;
 
@@ -37,14 +40,28 @@ public class StorageController implements Initializable {
     public TextField sysText;
     @FXML
     public Button regButton;
+    @FXML
+    public Button authButton;
+    @FXML
+    public TextField loginField;
+    @FXML
+    public PasswordField passField;
+    @FXML
+    public HBox authBox;
+    @FXML
+    public Button disconnectButton;
 
     private final String homeDir = "clientFiles/";
+
+
     private String currentDir = Path.of(homeDir).toAbsolutePath().toString();
 
     private Network network;
 
     private Stage regStage;
     private RegController regController;
+
+    private boolean isAuthenticated;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -91,6 +108,8 @@ public class StorageController implements Initializable {
                         clientView.getItems().clear();
                         clientView.getItems().addAll(getFiles(currentDir));
                     });
+                } else if (message instanceof AuthResponse authResponse) {
+                    setAuthenticated(authResponse.isAuthenticated());
                 }
             }
         } catch (Exception e) {
@@ -99,12 +118,28 @@ public class StorageController implements Initializable {
         }
     }
 
+    private void setAuthenticated(boolean authenticated) {
+        this.isAuthenticated = authenticated;
+        System.out.println(authenticated);
+
+        authBox.getChildren().forEach(x-> {
+            x.setVisible(!authenticated);
+            x.setManaged(!authenticated);
+        });
+        disconnectButton.setVisible(authenticated);
+        disconnectButton.setManaged(authenticated);
+
+
+        if (authenticated) setSysText("You was authenticated");
+        else setSysText("Invalid login or password");
+    }
+
 
     public void upload(ActionEvent actionEvent) throws IOException {
         String file = clientView.getSelectionModel().getSelectedItem();
         network.write(new FileMessage(Path.of(currentDir).resolve(file)));
 
-        setSysText("file: "+ file+" was sent to storage");
+        setSysText("file: " + file + " was sent to storage");
     }
 
 
@@ -112,9 +147,8 @@ public class StorageController implements Initializable {
         String file = serverView.getSelectionModel().getSelectedItem();
         network.write(new FileRequest(file));
 
-        setSysText("file: "+ file+" was downloaded from storage");
+        setSysText("file: " + file + " was downloaded from storage");
     }
-
 
 
     public void changePathClient(MouseEvent mouseEvent) {
@@ -149,23 +183,23 @@ public class StorageController implements Initializable {
             clientView.getItems().addAll(getFiles(currentDir));
         });
 
-        setSysText("file: "+ fileToDelete+" was deleted");
+        setSysText("file: " + fileToDelete + " was deleted");
     }
 
     public void deleteFileOnServerSide(ActionEvent actionEvent) throws IOException {
         String fileToDelete = serverView.getSelectionModel().getSelectedItem();
         network.write(new DeleteRequest(fileToDelete));
 
-        setSysText("file: "+ fileToDelete+" was deleted");
+        setSysText("file: " + fileToDelete + " was deleted");
     }
 
-    private void setSysText(String msg){
+    private void setSysText(String msg) {
         sysText.clear();
         sysText.setText(msg);
     }
 
     public void regStage(ActionEvent actionEvent) {
-        if (regStage == null){
+        if (regStage == null) {
             createRegStage();
         }
         regStage.show();
@@ -191,7 +225,19 @@ public class StorageController implements Initializable {
         try {
             network.write(new RegistrationRequest(login, password));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+    }
+
+    public void tryToAuth(ActionEvent actionEvent) {
+        try {
+            network.write(new AuthRequest(loginField.getText(), passField.getText()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void disconnect(ActionEvent actionEvent) {
+        setAuthenticated(false);
     }
 }

@@ -14,4 +14,9 @@ public class AuthControllerImpl implements AuthController{
     public boolean regUser(String login, String password) {
         return authService.registration(login, password);
     }
+
+    @Override
+    public boolean authenticate(String login, String password) {
+        return authService.authenticate(login, password);
+    }
 }

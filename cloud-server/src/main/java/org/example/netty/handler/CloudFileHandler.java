@@ -55,6 +55,9 @@ public class CloudFileHandler extends SimpleChannelInboundHandler<CloudMessage> 
         } else if (cloudMessage instanceof  RegistrationRequest registrationRequest){
             CloudServer.getAuthController()
                     .regUser(registrationRequest.getLogin(), registrationRequest.getPassword());
+
+        } else if (cloudMessage instanceof AuthRequest authRequest) {
+                ctx.writeAndFlush(new AuthResponse(CloudServer.getAuthController().authenticate(authRequest.getLogin(), authRequest.getPassword())));
         }
     }
 }

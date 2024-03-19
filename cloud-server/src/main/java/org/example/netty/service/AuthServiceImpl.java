@@ -14,4 +14,9 @@ public class AuthServiceImpl implements AuthService{
     public boolean registration(String login, String password) {
         return authRepository.saveUser(login, password);
     }
+
+    @Override
+    public boolean authenticate(String login, String password) {
+        return authRepository.authenticate(login, password);
+    }
 }
