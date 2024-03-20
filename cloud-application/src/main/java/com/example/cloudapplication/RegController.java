@@ -27,4 +27,12 @@ public class RegController {
 
         controller.registration(login, password);
     }
+
+    public void result(boolean isRegistered){
+        if (isRegistered){
+            textArea.setText("Account is successfully registered!");
+        } else {
+            textArea.setText("Error. Login has already taken");
+        }
+    }
 }

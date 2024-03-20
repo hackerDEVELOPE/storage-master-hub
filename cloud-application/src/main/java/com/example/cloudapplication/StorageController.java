@@ -75,7 +75,7 @@ public class StorageController implements Initializable {
             readThread.setDaemon(true);
             readThread.start();
 
-            sysText.setText("Welcome to Great Storage!");
+            sysText.setText("Welcome to Great Storage! Please sign in");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,6 +110,9 @@ public class StorageController implements Initializable {
                     });
                 } else if (message instanceof AuthResponse authResponse) {
                     setAuthenticated(authResponse.isAuthenticated());
+                    if (!authResponse.isAuthenticated()) setSysText("Invalid login or password!");
+                } else if (message instanceof RegistrationResponse regResponse) {
+                   regController.result(regResponse.isRegistered());
                 }
             }
         } catch (Exception e) {
@@ -120,7 +123,6 @@ public class StorageController implements Initializable {
 
     private void setAuthenticated(boolean authenticated) {
         this.isAuthenticated = authenticated;
-        System.out.println(authenticated);
 
         authBox.getChildren().forEach(x-> {
             x.setVisible(!authenticated);
@@ -131,7 +133,7 @@ public class StorageController implements Initializable {
 
 
         if (authenticated) setSysText("You was authenticated");
-        else setSysText("Invalid login or password");
+        if (!authenticated) serverView.getItems().clear();
     }
 
 
@@ -239,5 +241,7 @@ public class StorageController implements Initializable {
 
     public void disconnect(ActionEvent actionEvent) {
         setAuthenticated(false);
+        setSysText("You was disconnected!");
+
     }
 }

@@ -14,7 +14,6 @@ public class AuthRepositoryImpl implements AuthRepository{
             JDBC.psRegistration.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
