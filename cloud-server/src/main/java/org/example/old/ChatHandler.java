@@ -11,7 +11,7 @@ public class ChatHandler implements Runnable {
 
     private DataInputStream is;
     private DataOutputStream os;
-    private final String serverDir = "serverFiles/"; // TODO: replace magic words and do the same for client side
+    private final String serverDir = "serverFiles/";
 
     List<CloudFile> cloudFiles = new ArrayList<>();
 
