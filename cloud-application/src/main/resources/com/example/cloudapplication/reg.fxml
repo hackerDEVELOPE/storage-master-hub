@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="600" prefWidth="500" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cloudapplication.RegController">
+    <HBox prefHeight="300.0" prefWidth="200.0">
+        <ImageView fitHeight="200.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+    </HBox>
+
+
+    <Label text="login" />
+    <TextField fx:id="loginField" HBox.hgrow="ALWAYS" />
+    <Label text="password" />
+    <PasswordField fx:id="passwordField" HBox.hgrow="ALWAYS" />
+
+    <TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" />
+    <Button maxWidth="1.7976931348623157E308" onAction="#tryToReg" text="registration" VBox.vgrow="ALWAYS" />
+
+</VBox>
